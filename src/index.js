@@ -58,10 +58,4 @@ function search(docs, token) {
   return result;
 }
 
-const doc1 = { id: 'doc1', text: "I can't shoot straight unless I've had a pint!" };
-const docs = [doc1];
-
-console.log(search(docs, 'pint')); // ['doc1']
-console.log(search(docs, 'pint!')); // ['doc1']
-
 export default search;
