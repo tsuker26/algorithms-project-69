@@ -1,4 +1,4 @@
-function quickSort(array) {
+function quickSort(array, comparator = (a, b) => (a < b ? -1 : 1)) {
   if (array.length <= 1) return array;
 
   const pivotIndex = Math.floor(Math.random() * array.length);
@@ -11,14 +11,14 @@ function quickSort(array) {
   for (let i = 0; i < array.length; i += 1) {
     // eslint-disable-next-line no-continue
     if (i === pivotIndex) continue;
-    if (array[i] < pivot) {
+    if (comparator(array[i], pivot) < 0) {
       less.push(array[i]);
     } else {
       great.push(array[i]);
     }
   }
 
-  return [...quickSort(less), pivot, ...quickSort(great)];
+  return [...quickSort(less, comparator), pivot, ...quickSort(great, comparator)];
 }
 
 function binarySearch(array, token) {
@@ -57,7 +57,7 @@ function search(docs, token) {
     }
   }
 
-  return result.sort((a, b) => (a.count > b.count ? -1 : 1)).map((el) => el.id);
+  return quickSort(result, (a, b) => (a.count > b.count ? -1 : 1)).map((el) => el.id);
 }
 
 // const doc1 = { id: 'doc1', text: "I can't shoot straight unless I've had a pint!" };
