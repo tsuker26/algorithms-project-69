@@ -24,40 +24,54 @@ function quickSort(array, comparator = (a, b) => (a < b ? -1 : 1)) {
 function binarySearch(array, token) {
   let first = 0;
   let last = array.length - 1;
-  let count = 0;
 
   const arraySorted = quickSort(array);
 
-  const term = token.match(/\w+/g)[0];
-
   while (first <= last) {
     const middle = Math.floor((first + last) / 2);
-    const termElement = arraySorted[middle].match(/\w+/g)[0];
-    if (term === termElement) {
-      count += 1;
+    const term = arraySorted[middle];
+    if (token === term) {
+      return true;
     }
-    if (term < termElement) {
+    if (token < term) {
       last = middle - 1;
     } else {
       first = middle + 1;
     }
   }
-  return count;
+  return false;
 }
 
-function search(docs, token) {
-  if (!docs.length) return [];
-  const result = [];
-  for (let i = 0; i < docs.length; i += 1) {
-    const element = docs[i];
+function search(docs, query) {
+  const queryWords = query.toLowerCase().split(/\s+/);
 
-    const count = binarySearch(element.text.split(' '), token);
-    if (count) {
-      result.push({ count, id: element.id });
+  const countMatches = (text) => {
+    const textWords = text.toLowerCase().split(/\s+/);
+    let matches = 0;
+
+    // eslint-disable-next-line no-restricted-syntax
+    for (const word of queryWords) {
+      if (binarySearch(textWords, word)) {
+        // eslint-disable-next-line no-plusplus
+        matches++;
+      }
     }
-  }
 
-  return quickSort(result, (a, b) => (a.count > b.count ? -1 : 1)).map((el) => el.id);
+    return matches;
+  };
+
+  // eslint-disable-next-line array-callback-return
+  const result = docs.reduce((acc, cur) => {
+    const matches = countMatches(cur.text);
+
+    if (matches > 0) {
+      acc.push({ id: cur.id, matches });
+    }
+
+    return acc;
+  }, []);
+
+  return quickSort(result, (a, b) => (a.matches > b.matches ? -1 : 1)).map((el) => el.id);
 }
 
 // const doc1 = { id: 'doc1', text: "I can't shoot straight unless I've had a pint!" };
@@ -65,6 +79,7 @@ function search(docs, token) {
 // const doc3 = { id: 'doc3', text: "I'm your shooter." };
 // const docs = [doc1, doc2, doc3];
 
-// console.log(search(docs, 'shoot'));
+// const result = search(docs, 'shoot at me');
+// console.log(result); // ['doc2', 'doc1']
 
 export default search;
