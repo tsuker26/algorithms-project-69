@@ -1,3 +1,3 @@
-import buildSearchEngine from "./src";
+import buildSearchEngine from './src/buildSearchEngine';
 
 export default buildSearchEngine;
