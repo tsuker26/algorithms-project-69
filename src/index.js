@@ -55,6 +55,7 @@ function searchWord(array, token) {
 }
 
 function search(docs, query) {
+  if (!docs.length) return docs;
   const queryWords = query.toLowerCase().split(/\s+/);
   const index = {};
 
