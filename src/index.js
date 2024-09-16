@@ -111,13 +111,13 @@ function search(docs, query) {
   return quickSort(result, (a, b) => (a.tfIdf > b.tfIdf ? -1 : 1)).map((el) => el.id);
 }
 
-const doc1 = { id: 'doc1', text: 'some text some' };
-const doc2 = { id: 'doc2', text: 'some  text too' };
-const doc3 = { id: 'doc3', text: 'too' };
-const docs = [doc1, doc2, doc3];
+// const doc1 = { id: 'doc1', text: 'some text some' };
+// const doc2 = { id: 'doc2', text: 'some  text too' };
+// const doc3 = { id: 'doc3', text: 'too' };
+// const docs = [doc1, doc2, doc3];
 
-const result = search(docs, 'some text too');
-console.log(result);
+// const result = search(docs, 'some text too');
+// console.log(result);
 // const index = {
 //   some: ['doc1', 'doc2'],
 //   text: ['doc1', 'doc2'],
